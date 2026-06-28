@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debounce Implementation</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        form, fieldset{
+            width:50%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            padding: 0.75rem;
+            overflow: hidden;
+        }
+        input{
+            width: 400px;
+            height: auto;
+            overflow: hidden;
+        }
+        fieldset > legend{
+            text-align: center;
+        }
+        
+        button:disabled,
+        button.not-allowed {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .form-actions > button{
+            background-color: burlywood;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin: 1rem;
+        }
+        #user-output{
+            width: 100%;
+            min-height: 24px;
+            max-height: 120px;
+            overflow-y: auto;
+            word-break: break-word;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <form action="">
+            <fieldset>
+                <legend>Debounce Implementation</legend>
+                <div class="form-group">
+                    <label for="user-input"></label>
+                    <input 
+                        type="text" 
+                        id="user-input" 
+                        name="userInput" 
+                        placeholder="Enter Your Search"
+                        required
+                    >
+                    <p id="user-output" name="userOutput"></p>
+                </div>
+                
+            </fieldset>
+            <div class="form-actions">
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </main>
+
+<script>
+    const inputValue = document.getElementById('user-input');
+    const userOutput = document.getElementById('user-output');
+
+    function Debounce(callback, delay) {
+        let timerID;
+
+        return function (...args) {
+            clearTimeout(timerID);
+
+            timerID = setTimeout(() => {
+                callback.apply(this, args);
+            }, delay);
+        };
+    }
+
+    function updateOutput(value) {
+        userOutput.textContent = value;
+    }
+
+    const debouncedInput = Debounce(updateOutput, 500);
+
+    inputValue.addEventListener("input", (event) => {
+        debouncedInput(event.target.value);
+    });
+</script>
+</body>
+</html>
