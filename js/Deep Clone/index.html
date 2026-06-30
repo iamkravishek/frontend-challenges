@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Clone Implementation</title>
+</head>
+<body>
+    <h1>Deep Clone Implementation</h1>
+    <script>
+        function deepClone(args){
+            let obj;
+            if(typeof args !== 'object' || args === null) return args;
+
+            if(Array.isArray(args)){
+               obj = [];
+            }else{
+                obj = Object.create(Object.getPrototypeOf(args));
+            }
+
+            if(Object.prototype.toString.call(args) === "[object Date]"){
+                obj = new Date(args.getTime());
+                return obj;
+            }else if(Object.prototype.toString.call(args) === "[object RegExp]"){
+                
+                    return new RegExp(args.source, args.flags);
+
+            }else if(Object.prototype.toString.call(args) === "[object Map]"){
+                    const clone = new Map();
+
+                    for (const [key, value] of args) {
+                        clone.set(
+                            deepClone(key),
+                            deepClone(value)
+                        );
+                    }
+
+                    return clone;
+               
+            }else if(Object.prototype.toString.call(args) === "[object Set]"){
+                    const clone = new Set();
+
+                    for (const value of args) {
+                        clone.add(
+                            deepClone(value)
+                        );
+                    }
+
+                    return clone;   
+            }
+        }
+    </script>
+</body>
+</html>
