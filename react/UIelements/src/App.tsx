@@ -1,15 +1,15 @@
 
 // import Accordions from './accordion/Accordions'
 
-import Tabs from "./tabs/Tabs"
+import ProgressBar from "./Progressbar/Progressbar"
+// import Tabs from "./tabs/Tabs"
 
 
 function App() {
 
   return (
   <>
-   {/* <Accordions /> */}
-   <Tabs />
+   <ProgressBar />
   </> 
   )
 }
