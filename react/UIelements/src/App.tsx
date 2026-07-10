@@ -1,19 +1,22 @@
 
-import Accordions from './accordion/Accordions'
-import BackToTop from './BackToTop/BackToTop'
+// import Accordions from './accordion/Accordions'
+// import BackToTop from './BackToTop/BackToTop'
+import PasswordToggle from './Passwordtoggle/PasswordToggle'
 
-import ProgressBar from "./Progressbar/Progressbar"
-import Tabs from "./tabs/Tabs"
+// import ProgressBar from "./Progressbar/Progressbar"
+// import Tabs from "./tabs/Tabs"
+
 
 
 function App() {
 
   return (
   <>
-   <Accordions />
+   {/* <Accordions />
    <Tabs />
    <ProgressBar />
-   <BackToTop />
+   <BackToTop /> */}
+   <PasswordToggle />
   </> 
   )
 }
