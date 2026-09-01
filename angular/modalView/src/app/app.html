@@ -1,0 +1,10 @@
+<main class="parent-container">
+  <section>
+    <h1>Dialog Box</h1>
+    <app-dialog-box #dialog>
+      <p>Passing data from parent</p>
+      <p disclaimer>Passing on named Portal</p>
+    </app-dialog-box>
+    <button type="button" role="open-dialog" (click)="openDialog()">Open</button>
+  </section>
+</main>

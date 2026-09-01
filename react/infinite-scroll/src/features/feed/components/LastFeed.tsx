@@ -1,7 +1,7 @@
 export default function LastFeed(){
     return (
         <>
-            <p className="text-green-200">Last feed</p>
+           <div className="py-6 text-center">No more products</div>
         </>
     )
 }

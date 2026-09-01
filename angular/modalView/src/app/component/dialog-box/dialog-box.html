@@ -1,0 +1,6 @@
+<dialog #dialogBox (click)="onDialogClick($event)">
+    Hi There I am Dialog Box!
+    <ng-content></ng-content>
+    <button role="button" (click)="close()">Close</button>
+    <ng-content select='[disclaimer]'></ng-content>
+</dialog>
