@@ -1,15 +1,270 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <script>
-        function EventEmitter(){
-            const events = {};
+
+    <style>
+        body {
+            margin: 0;
+            background: #fff;
+            font-family: monospace;
         }
+
+        .editor {
+            width: 700px;
+            height: 100vh;
+            margin: 40px auto;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border: 1px solid #444;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .editor-header {
+            height: 35px;
+            background: #252526;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            color: #aaa;
+        }
+
+        textarea {
+            width: 100%;
+            height: calc(100% - 35px);
+            box-sizing: border-box;
+            padding: 15px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: "Courier New", monospace;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="editor">
+    <div class="editor-header">
+        Eventemitter Implementation from Scratch
+    </div>
+    <textarea spellcheck="false">
+        class EventEmitter {
+            constructor() {
+                this.events = new Map();
+            }
+
+            /*
+                ON - register the events ,
+                Case1 : if event_name exist, add into it's event_handler array
+                case2: if event_name  doesn't exist, register the event_name as well as it's handler
+                */
+
+            on(event_name, event_handler) {
+                if (this.events.has(event_name)) {
+                    this.events.get(event_name).push(event_handler);
+                } else {
+                    this.events.set(event_name, [event_handler]);
+                }
+                return this;
+            }
+
+            /*
+                Off - remove specific event_handler from event_name
+                case1: if event_name doesn't exist do nothing
+                case2: if event_handler doesn't exist do nothing
+                */
+            off(event_name, event_handler) {
+                if (!this.events.has(event_name)) return this;
+                const event_handlers = this.events.get(event_name);
+
+                //already checking through index
+                // if(this.events.has(event_name) && !event_handlers.includes(event_handler) ) return;
+
+                const handler_index = event_handlers.indexOf(event_handler);
+                if (handler_index === -1) return this;
+
+                /*
+                      initially, using delete handerler[handler]
+                      which results in [handler1, empty, handler3] - sparse array
+                      */
+                event_handlers.splice(handler_index, 1);
+
+                return this;
+            }
+
+            /*
+                emit - user to execute the listeners agaist thier event_name with payloads
+                */
+            emit(event_name, ...payload) {
+                const event_handlers = this.events.get(event_name);
+                if (!event_handlers) return;
+
+                [...event_handlers].forEach((event_handler) => {
+                    event_handler(...payload);
+                });
+
+                return this;
+            }
+
+            /*
+                once - it will execute the listener once only and then remove it 
+                */
+
+            once(event_name, event_handler) {
+                const wrapper = (...payload) => {
+                    this.off(event_name, wrapper);
+                    event_handler(...payload);
+                };
+
+                this.on(event_name, wrapper);
+
+                return this;
+            }
+        }
+    </textarea>
+
+</div>
+    <script>
+        class EventEmitter {
+            constructor() {
+                this.events = new Map();
+            }
+
+            /*
+                ON - register the events ,
+                Case1 : if event_name exist, add into it's event_handler array
+                case2: if event_name  doesn't exist, register the event_name as well as it's handler
+                */
+
+            on(event_name, event_handler) {
+                if (this.events.has(event_name)) {
+                    this.events.get(event_name).push(event_handler);
+                } else {
+                    this.events.set(event_name, [event_handler]);
+                }
+                return this;
+            }
+
+            /*
+                Off - remove specific event_handler from event_name
+                case1: if event_name doesn't exist do nothing
+                case2: if event_handler doesn't exist do nothing
+                */
+            off(event_name, event_handler) {
+                if (!this.events.has(event_name)) return this;
+                const event_handlers = this.events.get(event_name);
+
+                //already checking through index
+                // if(this.events.has(event_name) && !event_handlers.includes(event_handler) ) return;
+
+                const handler_index = event_handlers.indexOf(event_handler);
+                if (handler_index === -1) return this;
+
+                /*
+                      initially, using delete handerler[handler]
+                      which results in [handler1, empty, handler3] - sparse array
+                      */
+                event_handlers.splice(handler_index, 1);
+
+                return this;
+            }
+
+            /*
+                emit - user to execute the listeners agaist thier event_name with payloads
+                */
+            emit(event_name, ...payload) {
+                const event_handlers = this.events.get(event_name);
+                if (!event_handlers) return;
+
+                [...event_handlers].forEach((event_handler) => {
+                    event_handler(...payload);
+                });
+
+                return this;
+            }
+
+            /*
+                once - it will execute the listener once only and then remove it 
+                */
+
+            once(event_name, event_handler) {
+                const wrapper = (...payload) => {
+                    this.off(event_name, wrapper);
+                    event_handler(...payload);
+                };
+
+                this.on(event_name, wrapper);
+
+                return this;
+            }
+        }
+
+        console.log("TEST 1");
+
+        const emitter1 = new EventEmitter();
+
+        emitter1.on("data", (...args) => {
+            console.log("Listener 1:", args);
+        });
+
+        emitter1.emit("data", "A", "B");
+
+        console.log("TEST 2");
+
+        const emitter2 = new EventEmitter();
+
+        emitter2.on("data", () => {
+            console.log("Listener A");
+        });
+
+        emitter2.on("data", () => {
+            console.log("Listener B");
+        });
+
+        emitter2.emit("data");
+
+        console.log("TEST 3");
+
+        const emitter3 = new EventEmitter();
+
+        emitter3.on("login", () => {
+            console.log("LOGIN");
+        });
+
+        emitter3.on("logout", () => {
+            console.log("LOGOUT");
+        });
+
+        emitter3.emit("login");
+
+        console.log("TEST 4");
+
+        const emitter4 = new EventEmitter();
+
+        const handlerA = () => {
+            console.log("A");
+        };
+
+        const handlerB = () => {
+            console.log("B");
+        };
+
+        emitter4.on("data", handlerA);
+
+        emitter4.on("data", handlerB);
+
+        emitter4.off("data", handlerA);
+
+        emitter4.emit("data");
     </script>
 </body>
+
 </html>
