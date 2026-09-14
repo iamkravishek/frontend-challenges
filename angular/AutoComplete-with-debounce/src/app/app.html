@@ -1,0 +1,70 @@
+<main>
+  <h1 id="heading">Autocomplete  + Debounce + AbortController</h1>
+  <p id="subheading">
+    A full search typeahead: valueChanges.pipe(debounceTime(300),
+   distinctUntilChanged(), filter(q => q.length > 1), switchMap(q => api.search(q).pipe(catchError(()
+   => of([])))), takeUntil(destroy$)) 17. Write a component that properly
+   uses takeUntil with ngOnDestroy.
+   Write the same component using async pipe instead (no manual subscribe/unsubscribe) 
+  </p>
+
+  <section class="form-container">
+      <h1>Manual Subscription -  Rxjs + destroy</h1>
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <label for="userSearch">
+          <input 
+          type="text"
+          id="userSearch"
+          formControlName="userSearch"
+          >
+        </label>
+
+        <button type="submit" [disabled]="userForm.invalid">Search</button>
+      </form>
+
+  </section>
+
+
+  <section class="form-container">
+      <h2>Auto Subscription - Observable + async pipe</h2>
+      <form [formGroup]="userForms" (ngSubmit)="onSubmit()">
+        <label for="userText">
+          <input 
+          type="text"
+          id="userText"
+          formControlName="userText"
+          >
+        </label>
+
+        <button type="submit" [disabled]="userForms.invalid">Search</button>
+      </form>
+
+
+  </section>
+
+
+  <section class="result-container">
+      <div class="preview">
+        <p>User Search : 
+        @if( searchResults$ | async; as searchData){
+          {{searchData?.query}}
+        }@else{
+          {{userSearchPreview()}}
+        }
+        </p>
+      </div>
+      <ul 
+      class="results" style="list-style: number;margin: 0; padding: 0;">
+         API Result :
+         @if( searchResults$ | async; as searchData){
+           @for (result of searchData?.results; track result.display_name) {
+              <li>{{ result.display_name }}</li>
+            }
+         }@else{
+           @for(result of apiResultPreview(); track result.display_name){
+            <li>{{result?.display_name}}</li>
+           }
+         }
+      </ul>
+  </section>
+</main>

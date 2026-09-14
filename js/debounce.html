@@ -80,7 +80,7 @@
     function Debounce(callback, delay) {
         let timerID;
 
-        return function (...args) {
+        return function (args) {
             clearTimeout(timerID);
 
             timerID = setTimeout(() => {
@@ -89,13 +89,25 @@
         };
     }
 
+    // function Debounce(callback, delay) {
+    //     let timerID;
+    //     return function (...args) {
+    //         clearTimeout(timerID);
+    //         timerID = setTimeout(() => {
+    //             callback(...args);
+    //         }, delay);
+    //     };
+    // }
+    //this will work also and we do not have to use apply , currently we are writing generic thus using apply
+
     function updateOutput(value) {
         userOutput.textContent = value;
     }
 
-    const debouncedInput = Debounce(updateOutput, 500);
+    const debouncedInput = Debounce(updateOutput, 1000);
 
     inputValue.addEventListener("input", (event) => {
+        console.log(event.target.value);
         debouncedInput(event.target.value);
     });
 </script>
